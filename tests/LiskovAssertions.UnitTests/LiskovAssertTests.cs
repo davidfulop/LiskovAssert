@@ -11,13 +11,28 @@ namespace LiskovAssertions.UnitTests
     public class LiskovAssertTests
     {
         Type[] _ADerived = new Type[] { typeof(A1), typeof(A2) };
-        
+        LiskovAssert subject;
+
+        [SetUp]
+        public void SetUp()
+        {
+            subject = new LiskovAssert();
+        }
+
         [Test]
         public void GetAllSubclassesOf_Gets_All_Subclasses_from_same_assembly()
         {
-            LiskovAssert subject = new LiskovAssert();
             var types = subject.GetAllSubclassesOf<A>();
             CollectionAssert.AreEquivalent(_ADerived, types);
         }
+
+        [Test]
+        public void InstantiateAll_returns_one_instance_for_each_type_supplied()
+        {
+            var result = subject.InstantiateAll<A>(_ADerived);
+            Assert.IsInstanceOf(_ADerived[0], result[0]);
+            Assert.IsInstanceOf(_ADerived[1], result[1]);
+        }
+
     }
 }

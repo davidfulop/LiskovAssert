@@ -35,7 +35,7 @@ namespace LiskovAssertions
             }
             if (exceptions.Count > 0)
             {
-                throw new AggregateException(exceptions);
+                throw new AggregateException(message, exceptions);
             }
         }
     }

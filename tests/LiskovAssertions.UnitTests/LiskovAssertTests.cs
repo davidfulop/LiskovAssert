@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using LiskovAssertions;
+using System.Collections.Generic;
 
 namespace LiskovAssertions.UnitTests
 {
@@ -54,6 +55,32 @@ namespace LiskovAssertions.UnitTests
             Action<A> action = a => throw new ApplicationException();
             var aggrex = Assert.Throws<AggregateException>(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
             Assert.AreEqual(_ADerived.Length, aggrex.InnerExceptions.Count);
+        }
+        
+        [Test]
+        public void AssertNoDerivedClassThrows_exception_contains_original_exceptions()
+        {
+            List<Exception> exceptions = new List<Exception>();
+            Action<A> action = a => throw GetAndStoreException();
+            var aggrex = Assert.Throws<AggregateException>(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
+            CollectionAssert.AreEquivalent(exceptions, aggrex.InnerExceptions);
+            
+            Exception GetAndStoreException()
+            {
+                Exception ex = new ApplicationException(DateTime.UtcNow.Ticks.ToString());
+                exceptions.Add(ex);
+                return ex;
+            }
+        }
+        
+        [Test]
+        public void AssertNoDerivedClassThrows_set_exception_message_is_returned()
+        {
+            string message = "almabeka";
+            Action<A> action = a => throw new ApplicationException();
+            var aggrex = Assert.Throws<AggregateException>(() => subject.AssertNoDerivedClassThrows(action, message));
+            StringAssert.StartsWith(message, aggrex.Message);
+
         }
     }
 }

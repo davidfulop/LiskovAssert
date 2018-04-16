@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -15,6 +16,10 @@ namespace LiskovAssertions
         public T[] InstantiateAll<T>(Type[] types)
         {
             return types.Select(t => Activator.CreateInstance(t)).Cast<T>().ToArray();
+        }
+
+        public void AssertNoDerivedClassThrows<T>(Action<T> action, string message) where T : class
+        {
         }
     }
 }

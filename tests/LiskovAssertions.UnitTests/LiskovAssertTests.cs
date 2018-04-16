@@ -34,5 +34,11 @@ namespace LiskovAssertions.UnitTests
             Assert.IsInstanceOf(_ADerived[1], result[1]);
         }
 
+        [Test]
+        public void AssertNoDerivedClassThrows_does_not_throw_for_empty_action()
+        {
+            Action<A> action = a => {};
+            Assert.DoesNotThrow(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
+        }
     }
 }

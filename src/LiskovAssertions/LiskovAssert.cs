@@ -20,6 +20,23 @@ namespace LiskovAssertions
 
         public void AssertNoDerivedClassThrows<T>(Action<T> action, string message) where T : class
         {
+            List<Exception> exceptions = new List<Exception>();
+            T[] subjects = InstantiateAll<T>(GetAllSubclassesOf<T>());
+            foreach (T subject in subjects)
+            {
+                try
+                {
+                    action(subject);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);                    
+                }
+            }
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
     }
 }

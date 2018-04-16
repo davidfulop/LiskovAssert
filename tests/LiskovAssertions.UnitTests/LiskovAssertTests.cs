@@ -40,5 +40,20 @@ namespace LiskovAssertions.UnitTests
             Action<A> action = a => {};
             Assert.DoesNotThrow(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
         }
+
+        [Test]
+        public void AssertNoDerivedClassThrows_throws_AggregateException_when_action_throws()
+        {
+            Action<A> action = a => throw new ApplicationException();
+            Assert.Throws<AggregateException>(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
+        }
+
+        [Test]
+        public void AssertNoDerivedClassThrows_AggregateException_contains_all_exceptions()
+        {
+            Action<A> action = a => throw new ApplicationException();
+            var aggrex = Assert.Throws<AggregateException>(() => subject.AssertNoDerivedClassThrows(action, string.Empty));
+            Assert.AreEqual(_ADerived.Length, aggrex.InnerExceptions.Count);
+        }
     }
 }

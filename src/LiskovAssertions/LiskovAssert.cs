@@ -39,4 +39,13 @@ namespace LiskovAssertions
             }
         }
     }
+
+    public static class Liskov
+    {
+        private static readonly LiskovAssert _liskovAssert = new LiskovAssert();
+        public static void AssertNoDerivedClassThrows<T>(Action<T> action, string message) where T : class
+        {
+            _liskovAssert.AssertNoDerivedClassThrows<T>(action, message);
+        }
+    }
 }

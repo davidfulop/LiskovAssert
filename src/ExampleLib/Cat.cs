@@ -7,7 +7,9 @@ namespace ExampleLib
     {
         public virtual string Feed(Food food)
         {
-            return null;
+            if (food == Food.HumanFood)
+                return "KHII";
+            else return "Meow";
         }
     }
     

@@ -17,37 +17,17 @@ namespace ExampleLib.UnitTests
             cat = new Cat();
         }
 
-        [Test]
-        public void She_returns_Hiss_when_supplied_with_HumanFood()
-        {
-            Food food = Food.HumanFood;
-            
+        [TestCase(Food.HumanFood, HISS)]
+        [TestCase(Food.DryCatFood, MEOW)]
+        [TestCase(Food.CannedCatFood, MEOW)]
+        public void It_returns_valid_response_for_foods(Food food, string reply)
+        {            
             string result = cat.Feed(food);
 
-            Assert.That(result == HISS);
-        }
-        
-        [Test]
-        public void She_returns_Meow_when_supplied_with_DryCatFood()
-        {
-            Food food = Food.DryCatFood;
-            
-            string result = cat.Feed(food);
-
-            Assert.That(result == MEOW);
-        }
-        
-        [Test]
-        public void She_returns_Meow_when_supplied_with_CannedCatFood()
-        {
-            Food food = Food.CannedCatFood;
-            
-            string result = cat.Feed(food);
-
-            Assert.That(result == MEOW);
+            Assert.That(result == reply);
         }
 
-        //Liskov assertion for the behaviour of the Feed method
+        // Liskov assertion for the behaviour of the Feed method
         [TestCase(Food.HumanFood)]
         [TestCase(Food.DryCatFood)]
         [TestCase(Food.CannedCatFood)]

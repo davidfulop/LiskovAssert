@@ -15,32 +15,22 @@ namespace ExampleLib.UnitTests
             cat = new SpoiledCat();
         }
 
+        // Note that this test assumes behaviour that violates the LSP in this case
         [Test]
-        public void She_throws_ArgumentException_when_supplied_with_HumanFood()
+        public void It_throws_ArgumentException_when_supplied_with_HumanFood()
         {
             Food food = Food.HumanFood;
             
             Assert.Throws(typeof(System.ArgumentException), () => cat.Feed(food));
         }
         
-        [Test]
-        public void She_returns_Hiss_when_supplied_with_DryCatFood()
-        {
-            Food food = Food.DryCatFood;
-            
+        [TestCase(Food.DryCatFood, HISS)]
+        [TestCase(Food.CannedCatFood, MEOW)]
+        public void It_returns_valid_response_for_foods(Food food, string reply)
+        {            
             string result = cat.Feed(food);
 
-            Assert.That(result == HISS);
-        }
-        
-        [Test]
-        public void She_returns_Meow_when_supplied_with_CannedCatFood()
-        {
-            Food food = Food.CannedCatFood;
-            
-            string result = cat.Feed(food);
-
-            Assert.That(result == MEOW);
+            Assert.That(result == reply);
         }
     }
 }

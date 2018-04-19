@@ -46,5 +46,14 @@ namespace ExampleLib.UnitTests
 
             Assert.That(result == MEOW);
         }
+
+        //Liskov assertion for the behaviour of the Feed method
+        [TestCase(Food.HumanFood)]
+        [TestCase(Food.DryCatFood)]
+        [TestCase(Food.CannedCatFood)]
+        public void All_derived_return_string_for_valid_input(Food food)
+        {
+            Liskov.AssertNoDerivedClassThrows<Cat>(cat => cat.Feed(food), "Argh!");
+        }
     }
 }
